@@ -1,0 +1,100 @@
+391:    currency: "$",
+401:    currency: "$",
+411:    currency: "$",
+421:    currency: "$",
+431:    currency: "$",
+590:        currency: "$",
+600:        currency: "$",
+610:        currency: "$",
+629:        currency: "$",
+639:        currency: "$",
+649:        currency: "$",
+893:    // Auto-detect user's country/timezone to set optimal currency and date format
+932:        if (prev.currency === "R" && detectedCurrency !== "R") {
+935:            currency: detectedCurrency,
+1173:  const [currencyFetchInfo, setCurrencyFetchInfo] = useState<{
+1185:    const oldSymbol = activeDoc.currency || "$";
+1188:    setActiveDoc((prev) => ({ ...prev, currency: newSymbol }));
+1361:      `✨ Automatically converted all currency amounts using the exchange rate of ${rate.toFixed(4)}!`,
+1703:      const curSymbol = docDetails.currency || "R";
+1754:    const displayCur = matchesAll[0]?.documentData?.currency || "R";
+1953:        currency: activeDoc.currency || "$",
+2075:              currency: inv.currency || "$",
+2716:  const [currencySuggestion, setCurrencySuggestion] = useState<string | null>(null);
+2718:    activeDoc?.currency,
+3237:        textContent += `${idx + 1}. ${item.description || "Item"} - Qty: ${item.quantity} @ ${activeDoc.currency || "$"}${item.rate}\n`;
+3272:      const subtitle = `Total: ${activeDoc.currency || "$"}${calculateSavedDocTotals(activeDoc).grandTotal.toFixed(2)}`;
+4081:          currency: activeDoc.currency || "$",
+4093:          `🎉 Suggested: ${activeDoc.currency}${data.suggestedRate.toFixed(2)}. ${data.reasoning || ""}`,
+4187:    currency: string;
+4397:          item.documentData.currency || "$",
+4410:      e.currency || "$",
+4474:          item.documentData.currency || "$",
+4487:      e.currency || "$",
+4720:    const totalRepresent = `${activeDoc.currency || "R"}${grandTotal.toFixed(2)}`;
+4926:      currency: sample.currency,
+5104:      currency: "R",
+5310:        currency: "R",
+5359:        currency: "R",
+5407:        currency: "$",
+5468:        currency: "$",
+5526:        currency: "€",
+5631:      {currencySuggestion && (
+5635:            <span>Based on your location, we suggest using <strong className="text-zinc-900 font-black text-xs">{currencySuggestion}</strong> as your currency symbol. Would you like to switch?</span>
+5640:                setActiveDoc({ ...activeDoc, currency: currencySuggestion });
+5642:                handleShowAlert(`Currency quickly changed to ${currencySuggestion}`);
+6605:                            {sample.currency} • {sample.customTypeName}
+7414:                        currency: item.documentData.currency || "$",
+7429:                    currency: e.currency,
+7501:                      currency: newTxCurrency,
+8512:                                        {tx.currency}
+8519:                                        {tx.currency}
+8832:                                  {docDetails.currency || "R"}
+10344:                        currency: doc.currency || "$",
+10811:                                    csv += `Debtor,"${d.clientName}",${d.amount},"${d.currency}",${d.dueDate},${d.status},"${d.notes.replace(/"/g, '""')}"\n`;
+10814:                                    csv += `Creditor,"${c.vendorName}",${c.amount},"${c.currency}",${c.dueDate},${c.status},"${c.notes.replace(/"/g, '""')}"\n`;
+10855:                                    d.currency,
+10865:                                    c.currency,
+10911:                                      const subject = `Pending Balance Reminder: ${activeDoc.currency || "$"}${amountStr}`;
+10912:                                      const body = `Dear ${clientName},\n\nWe hope this finds you well. \n\nThis is a courteous reminder that an outstanding balance of ${activeDoc.currency || "$"}${amountStr} regarding your general ledger remains unsettled.\n\nCould you please arrange payment at your earliest convenience?\n\nSincerely,\nThe Bookkeeping Team`;
+10978:                                  currency: newDebtCurrency,
+11338:                                            {d.currency}
+11482:                                  currency: newCredCurrency,
+11864:                                            {c.currency}
+13488:                                            value={activeDoc.currency}
+14174:                                      value={activeDoc.currency}
+14216:                                    {currencyFetchInfo && (
+14227:                                            1 {currencyFetchInfo.fromCode} ={" "}
+14228:                                            {currencyFetchInfo.rate.toFixed(4)}{" "}
+14229:                                            {currencyFetchInfo.toCode}
+14234:                                          {currencyFetchInfo.isOfflineFallback
+14240:                                          {currencyFetchInfo.fromCode} (
+14241:                                          {currencyFetchInfo.from}) to{" "}
+14242:                                          {currencyFetchInfo.toCode} (
+14243:                                          {currencyFetchInfo.to})?
+14251:                                                currencyFetchInfo.rate,
+15228:                                    {activeDoc.currency}
+15794:                                                ({activeDoc.currency}){" "}
+15932:                                                {activeDoc.currency}
+16101:                                                        {activeDoc.currency}
+16106:                                                        {activeDoc.currency}
+16205:                                                                        activeDoc.currency
+16216:                                                                        activeDoc.currency
+16466:                                        Overall discount ({activeDoc.currency}):
+16502:                                        Shipping charges ({activeDoc.currency}):
+16521:                                        {activeDoc.currency}):
+16799:                                        : "💡 Leaving this blank will auto-generate secure transaction parameters containing invoice number, subtotal and currency automatically!"}
+17054:                                          with amount {activeDoc.currency}{" "}
+17188:                                                {sched.documentData.currency ||
+17545:                          activeDoc.currency
+18600:                                          {activeDoc.currency})
+18713:                                                `Secure Payment details. Invoice: #${activeDoc.documentNumber}, Amount: ${activeDoc.currency}${grandTotal.toFixed(2)}`,
+18743:                                                  {activeDoc.currency}
+18761:                                        {activeDoc.currency}
+18770:                                          -{activeDoc.currency}
+18783:                                          +{activeDoc.currency}
+18795:                                          +{activeDoc.currency}
+18806:                                        {activeDoc.currency}
+18816:                                            -{activeDoc.currency}
+18823:                                            {activeDoc.currency}
+20243:                                {docDetails.currency || "R"}

@@ -1,0 +1,16 @@
+{
+  "name": "Smart Invoice Creator",
+  "short_name": "InvoiceCreator",
+  "description": "Smart cross-device invoice, receipt, and billing note manager.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%237c3aed'%3E%3Cpath d='M128 64c0-17.7 14.3-32 32-32h192c17.7 0 32 14.3 32 32v384c0 17.7-14.3 32-32 32H165.3c-15.6 0-29.4-11.3-32-26.6L128 64z'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+1537:  const confirmIncompleteLines = async () => {
+3147:    const proceed = await confirmIncompleteLines();
+3338:    const proceed = await confirmIncompleteLines();
+3384:    const proceed = await confirmIncompleteLines();
+3424:    const proceed = await confirmIncompleteLines();
+3683:    const proceed = await confirmIncompleteLines();
+3727:    const proceed = await confirmIncompleteLines();
+4167:      !confirm(
+4184:  const handleConfirmImportItems = () => {
+4192:        if (!confirm(`Warning: ${duplicates.length} of the selected items appear to already be in this document. Do you want to add them anyway?`)) {
+5063:    const proceed = await confirmIncompleteLines();
+10570:                                          confirm(
+21147:                  onClick={handleConfirmImportItems}

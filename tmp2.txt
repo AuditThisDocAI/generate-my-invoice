@@ -1,0 +1,30 @@
+2935:    // 1. If tab is not focused on designer/edit workspace, programmatically activate it
+2938:        "🔄 Document view not currently in active Workspace. Switching workspace editor to prepare export...",
+4903:  const scrollWorkspaceToTop = () => {
+4906:      const mainContainer = document.getElementById("main_workspace_container");
+4957:    scrollWorkspaceToTop();
+5090:    scrollWorkspaceToTop();
+5288:    scrollWorkspaceToTop();
+5596:    scrollWorkspaceToTop();
+5676:                      WORKSPACE
+5687:                  Effortless business workspace & invoicing system.
+5837:          {/* Sub Navigation Bar - Holds the workspace tab links and system resetting controls */}
+5846:                <span>{t("workspace", "Workspace")}</span>
+5993:                // Clear query parameter to go back to original app workspace
+6088:              <strong>Aria Workspace Admin Support</strong>. Access will unlock
+6098:      {/* Main Workspace Frame */}
+6100:        id="workspace_frame"
+6118:                    Workspace
+6618:              id="main_workspace_container"
+6938:                            Google Keep Sync Workspace
+6941:                            Google Keep workspace sync, sticky payment notes, and automatic calendar reminders are premium features restricted to <strong>Pro plan users ($199/yr)</strong>.
+8907:                                    `♻️ Loaded document #${docDetails.documentNumber} to workspace!`,
+10308:                  // Creditors & Debtors ledger requires Pro workspace plan or higher, Solo users are blocked
+10431:                            Transform your workspace into an enterprise-grade
+10490:                                "💡 Select Pro or Business plan here to activate full workspace access!",
+10790:                                active workspace templates. This minimizes
+12344:                    {/* Right Column: Platform licensing upgrades (Checkout plans to unlock active workspace operations) */}
+19223:                      registries, automated ledgers, bookkeeping workspaces, and
+19371:                      and Google Workspace (for exporting sheets). These
+20263:                                  `♻️ Loaded document #${docDetails.documentNumber} to workspace!`,
+20320:                  Real-time Workspace Trigger

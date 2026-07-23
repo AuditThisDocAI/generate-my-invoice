@@ -1,0 +1,22 @@
+1663:      let totals = { grandTotal: 0, collected: 0, outstanding: 0 };
+1671:        totals = { grandTotal: subtotal, collected: subtotal, outstanding: subtotal };
+1674:      totalBilledSum += totals.grandTotal;
+1678:      const isPaid = docDetails.amountPaid && docDetails.amountPaid >= totals.grandTotal;
+1705:      doc.text(`${curSymbol} ${totals.grandTotal.toFixed(2)}`, 165, y + 5.5);
+3272:      const subtitle = `Total: ${activeDoc.currency || "$"}${calculateSavedDocTotals(activeDoc).grandTotal.toFixed(2)}`;
+4161:    const grandTotal = afterDiscount + globalTaxCalculated + doc.shippingCharge;
+4164:      doc.documentType === "receipt" ? grandTotal : doc.amountPaid;
+4165:    const outstanding = Math.max(0, grandTotal - collected);
+4168:      grandTotal,
+4526:  const grandTotal =
+4528:  const balanceDue = Math.max(0, grandTotal - activeDoc.amountPaid);
+4720:    const totalRepresent = `${activeDoc.currency || "R"}${grandTotal.toFixed(2)}`;
+6908:                  totalAmount={grandTotal}
+8791:                        const { grandTotal: totalVal, subtotal } =
+15264:                                    {grandTotal.toFixed(2)}
+17090:                                          {grandTotal.toFixed(2)}
+18748:                                                `Secure Payment details. Invoice: #${activeDoc.documentNumber}, Amount: ${activeDoc.currency}${grandTotal.toFixed(2)}`,
+18779:                                                  {grandTotal.toFixed(2)}
+18842:                                        {grandTotal.toFixed(2)}
+19513:        totalAmount={grandTotal}
+20216:                        totalVal = calculated.grandTotal;

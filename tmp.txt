@@ -1,0 +1,42 @@
+2422:        issueDate: activeDoc.issueDate || "",
+2571:              issueDate: inv.issueDate || "",
+2960:      // 2. Date-range Filter (Operating on issueDate standard ISO string)
+2962:      const issueDateStr = doc.issueDate || "";
+2963:      if (issueDateStr) {
+2965:          matchesDate = matchesDate && issueDateStr >= historyStartDate;
+2968:          matchesDate = matchesDate && issueDateStr <= historyEndDate;
+5340:          item.documentData.issueDate,
+5418:          item.documentData.issueDate,
+5642:      issueDate: new Date().toISOString().split("T")[0],
+5659:      issueDate: new Date().toISOString().split("T")[0],
+5924:      issueDate: new Date().toISOString().split("T")[0],
+6111:      issueDate: new Date().toISOString().split("T")[0],
+6201:        issueDate: new Date().toISOString().split("T")[0],
+6299:        issueDate: new Date().toISOString().split("T")[0],
+6348:        issueDate: new Date().toISOString().split("T")[0],
+6398:        issueDate: new Date().toISOString().split("T")[0],
+6457:        issueDate: new Date().toISOString().split("T")[0],
+6502:      agencyDoc.issueDate = new Date().toISOString().split("T")[0];
+6514:        issueDate: new Date().toISOString().split("T")[0],
+6570:      hospitalityDoc.issueDate = new Date().toISOString().split("T")[0];
+6580:      retailDoc.issueDate = new Date().toISOString().split("T")[0];
+7938:                      const d = item.documentData.issueDate;
+8652:                      const dateStr = item.documentData.issueDate;
+8822:                      const dateParts = item.documentData.issueDate.split("-");
+8901:                            item.documentData.issueDate,
+8910:                        date: item.documentData.issueDate,
+10565:                                        item.documentData.issueDate.split("-");
+10597:                                              item.documentData.issueDate,
+10727:                                  h.documentData.issueDate || h.timestamp,
+10739:                                          h.documentData.issueDate ||
+10747:                                        h.documentData.issueDate ||
+12914:                        dueDate: doc.dueDate || doc.issueDate || "N/A",
+16429:                                              value={activeDoc.issueDate}
+16433:                                                  issueDate: e.target.value,
+17200:                                        value={activeDoc.issueDate}
+17204:                                            issueDate: e.target.value,
+18504:                                    {activeDoc.issueDate || "Today"} /{" "}
+22265:                                          activeDoc.issueDate,
+22502:                                          activeDoc.issueDate,
+22918:                                          activeDoc.issueDate,
+22973:                                      {formatDocumentDate(activeDoc.issueDate)}

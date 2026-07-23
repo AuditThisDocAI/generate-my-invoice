@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default-deny catch-all safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User data schema validator
+    function isValidUser(data) {
+      return data.uid is string 
+        && data.uid.size() <= 128
+        && data.email is string 
+        && data.email.size() <= 256
+        && data.paymentTier is string
+        && data.paymentTier in ['free', 'starter', 'professional', 'business', 'enterprise', 'growth', 'pro', 'unlimited', 'bundle', 'payg'];
+    }
+
+    // Invoice document schema validator
+    function isValidInvoice(data) {
+      return data.id is string 
+        && data.id.size() <= 128
+        && data.userId is string 
+        && data.userId.size() <= 128
+        && data.documentNumber is string 
+        && data.documentNumber.size() <= 128
+        && data.documentType is string
+        && data.documentType in ['invoice', 'receipt', 'quote', 'purchase_order', 'delivery_note', 'custom', 'letterhead', 'resume'];
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+      allow delete: if false; // Account deactivations are system-managed
+
+      match /invoices/{invoiceId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidInvoice(request.resource.data) && request.resource.data.userId == userId;
+        allow update: if isOwner(userId) && isValidInvoice(request.resource.data) && request.resource.data.userId == userId;
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

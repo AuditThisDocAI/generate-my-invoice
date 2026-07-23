@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;650;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Redefine emerald to Teal (#14B8A6) */
+  --color-emerald-50: #F0FDFA;
+  --color-emerald-100: #CCFBF1;
+  --color-emerald-200: #99F6E4;
+  --color-emerald-300: #5EEAD4;
+  --color-emerald-400: #2DD4BF;
+  --color-emerald-500: #14B8A6;
+  --color-emerald-600: #0D9488;
+  --color-emerald-700: #0F766E;
+  --color-emerald-800: #115E59;
+  --color-emerald-900: #134E4A;
+  --color-emerald-950: #042F2E;
+
+  /* Redefine indigo to Purple (#8B5CF6) */
+  --color-indigo-50: #F5F3FF;
+  --color-indigo-100: #EDE9FE;
+  --color-indigo-200: #DDD6FE;
+  --color-indigo-300: #C4B5FD;
+  --color-indigo-400: #A78BFA;
+  --color-indigo-500: #8B5CF6;
+  --color-indigo-600: #7C3AED;
+  --color-indigo-700: #6D28D9;
+  --color-indigo-800: #5B21B6;
+  --color-indigo-900: #4C1D95;
+  --color-indigo-950: #2E1065;
+
+  /* Map zinc to dynamic variables for Dark Mode */
+  --color-white: var(--theme-bg-main);
+  --color-zinc-50: var(--theme-card);
+  --color-zinc-100: var(--theme-border-lite);
+  --color-zinc-200: var(--theme-border);
+  --color-zinc-300: var(--theme-zinc-300);
+  --color-zinc-400: var(--theme-zinc-400);
+  --color-zinc-500: var(--theme-zinc-500);
+  --color-zinc-600: var(--theme-zinc-600);
+  --color-zinc-700: var(--theme-zinc-700);
+  --color-zinc-800: var(--theme-text-sec);
+  --color-zinc-900: var(--theme-text-main);
+  --color-zinc-950: var(--theme-text-strong);
+}
+
+:root {
+  /* LIGHT MODE MAP (Slate-based neutrals) */
+  --theme-bg-main: #FFFFFF;
+  --theme-card: #F8FAFC; 
+  --theme-border-lite: #F1F5F9;
+  --theme-border: #E2E8F0;
+  --theme-zinc-300: #CBD5E1;
+  --theme-zinc-400: #94A3B8;
+  --theme-zinc-500: #64748B;
+  --theme-zinc-600: #475569;
+  --theme-zinc-700: #334155;
+  --theme-text-sec: #1E293B;
+  --theme-text-main: #0F172A;
+  --theme-text-strong: #020617;
+}
+
+.dark {
+  /* DARK MODE MAP */
+  --theme-bg-main: #0F172A;     
+  --theme-card: #1E293B;   
+  --theme-border-lite: #1E293B;  
+  --theme-border: #334155;
+  --theme-zinc-300: #475569;
+  --theme-zinc-400: #64748B;
+  --theme-zinc-500: #94A3B8;
+  --theme-zinc-600: #CBD5E1;
+  --theme-zinc-700: #E2E8F0;
+  --theme-text-sec: #E2E8F0;
+  --theme-text-main: #F8FAFC;  
+  --theme-text-strong: #FFFFFF;
+}
+
+/* Force Light Mode on the inner document template so it always looks correct for PDFs/Printing */
+#invoice-template {
+  --theme-bg-main: #FFFFFF !important;
+  --theme-card: #F8FAFC !important; 
+  --theme-border-lite: #F1F5F9 !important;
+  --theme-border: #E2E8F0 !important;
+  --theme-zinc-300: #CBD5E1 !important;
+  --theme-zinc-400: #94A3B8 !important;
+  --theme-zinc-500: #64748B !important;
+  --theme-zinc-600: #475569 !important;
+  --theme-zinc-700: #334155 !important;
+  --theme-text-sec: #1E293B !important;
+  --theme-text-main: #0F172A !important;
+  --theme-text-strong: #020617 !important;
+}
+
+/* Custom visual styles and print rules */
+@keyframes logRedGlow {
+  0% { background-color: rgba(254, 226, 226, 1); box-shadow: inset 0 0 15px rgba(244, 63, 94, 0.2); }
+  100% { background-color: transparent; box-shadow: none; }
+}
+.animate-red-glow {
+  animation: logRedGlow 2.5s ease-out;
+}
+
+html {
+  font-size: 110%; /* Makes all typography larger across Tailwind */
+  background: #fff;
+}
+
+body {
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* Re-invert media and certain canvases so they display in original colors */
+img, video, iframe, [data-invert-ignore="true"] {
+  /* Removed inverted filter */
+}
+
+@media print {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    filter: none !important;
+    background: white !important;
+    color: black !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Hide every editor pane, chat widgets and modals during printing */
+  .no-print, 
+  #navbar, 
+  #doc_layout_aside, 
+  #form_editor_pane, 
+  #footer_bar, 
+  [class*="SupportChat"], 
+  [class*="ReminderAssistant"], 
+  button {
+    display: none !important;
+  }
+
+  /* Reset all outer layouts, grids, flex containers, paddings and margins during print to prevent squeezing */
+  #app_root,
+  #workspace_frame,
+  main#main_workspace_container,
+  #draft_rendered_preview,
+  .xl\:col-span-5,
+  .xl\:col-span-12,
+  .xl\:grid-cols-12,
+  .max-w-7xl,
+  .mx-auto {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    float: none !important;
+    position: static !important;
+    height: auto !important;
+    background: transparent !important;
+  }
+
+  /* Force the sheet container of the invoice to look flawless when printed */
+  #invoice-template, #final_print_sheet {
+    display: block !important;
+    width: 210mm !important; /* Forces layout to behave standard A4 width */
+    max-width: 100% !important;
+    min-height: 297mm !important; /* standard A4 sheet height */
+    margin: 0 auto !important; /* Centered perfectly on screen/page margins */
+    padding: 15mm 20mm !important; /* Balanced professional padding */
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    color: black !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    page-break-after: avoid !important;
+  }
+
+  /* Make the document fill the page */
+  .print-fill {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Prevent page breaks inside critical elements */
+  tr, .print-avoid-break, .print-keep-together {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    break-inside: avoid-page !important;
+  }
+  
+  .print-page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}
+
+/* Eye catching animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.35);
+  }
+}
+
+@keyframes floatOrb {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05);
+  }
+}
+
+.ai-pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+.floating-orb {
+  animation: floatOrb 8s infinite ease-in-out;
+}
+
+.premium-gradient-bg {
+  background: radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+              #fafafa;
+}
+
+/* Webkit scrollbar visual customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(139, 92, 246, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 9px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+

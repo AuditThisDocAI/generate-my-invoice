@@ -1,0 +1,235 @@
+1:import React, { useState, useEffect, useRef, useMemo } from "react";
+3:import { useTranslation } from "react-i18next";
+114:import { useLocaleDetector, REGION_TAX_MAP, CURRENCY_TAX_MAP } from "./hooks/useLocaleDetector";
+553:  const { t, i18n } = useTranslation();
+556:  const [activeDoc, setActiveDoc] = useState<DocumentData>(
+559:  const [history, setHistory] = useState<SavedHistory[]>([]);
+560:  const [expenses, setExpenses] = useState<ExpenseRecord[]>([]);
+563:  const [taxAuditStartDate, setTaxAuditStartDate] = useState<string>("");
+564:  const [taxAuditEndDate, setTaxAuditEndDate] = useState<string>("");
+565:  const [taxAuditPreset, setTaxAuditPreset] = useState<string>("custom");
+566:  const [taxAuditYearType, setTaxAuditYearType] = useState<
+569:  const [vatOverrides, setVatOverrides] = useState({
+575:  const [varianceYear, setVarianceYear] = useState(new Date().getFullYear());
+576:  const [forensicStartDate, setForensicStartDate] = useState<string>("");
+577:  const [forensicEndDate, setForensicEndDate] = useState<string>("");
+579:  useEffect(() => {
+602:  const [jobs, setJobs] = useState<WorkJob[]>([]);
+605:  const [callLogs, setCallLogs] = useState<ClientCallLog[]>([]);
+608:  const [creditors, setCreditors] = useState<CreditorRecord[]>(() => {
+647:  const [debtors, setDebtors] = useState<DebtorRecord[]>(() => {
+686:  useEffect(() => {
+690:  useEffect(() => {
+698:  const [termsRefundModal, setTermsRefundModal] = useState<
+703:  const [newCredName, setNewCredName] = useState("");
+704:  const [newCredEmail, setNewCredEmail] = useState("");
+705:  const [newCredPhone, setNewCredPhone] = useState("");
+706:  const [newCredTax, setNewCredTax] = useState("");
+707:  const [newCredCat, setNewCredCat] = useState("Software & Subscriptions");
+708:  const [newCredAmount, setNewCredAmount] = useState("");
+709:  const [newCredCurrency, setNewCredCurrency] = useState("$");
+710:  const [newCredDueDate, setNewCredDueDate] = useState(
+713:  const [newCredNotes, setNewCredNotes] = useState("");
+714:  const [credSearch, setCredSearch] = useState("");
+715:  const [credFilterStatus, setCredFilterStatus] = useState("all");
+718:  const [newDebtName, setNewDebtName] = useState("");
+719:  const [newDebtEmail, setNewDebtEmail] = useState("");
+720:  const [newDebtPhone, setNewDebtPhone] = useState("");
+721:  const [newDebtTax, setNewDebtTax] = useState("");
+722:  const [newDebtCompany, setNewDebtCompany] = useState("");
+723:  const [newDebtAmount, setNewDebtAmount] = useState("");
+724:  const [newDebtCurrency, setNewDebtCurrency] = useState("$");
+725:  const [newDebtDueDate, setNewDebtDueDate] = useState(
+728:  const [newDebtNotes, setNewDebtNotes] = useState("");
+729:  const [debtSearch, setDebtSearch] = useState("");
+730:  const [debtFilterStatus, setDebtFilterStatus] = useState("all");
+733:  const [credDebSubTab, setCredDebSubTab] = useState<
+736:  const [forceBypassSubCheck, setForceBypassSubCheck] = useState(false);
+738:  useEffect(() => {
+742:  useEffect(() => {
+746:  const [newCallClientName, setNewCallClientName] = useState("");
+747:  const [newCallClientPhone, setNewCallClientPhone] = useState("");
+748:  const [newCallClientEmail, setNewCallClientEmail] = useState("");
+749:  const [newCallDate, setNewCallDate] = useState(
+752:  const [newCallTime, setNewCallTime] = useState("14:00");
+753:  const [newCallDuration, setNewCallDuration] = useState("10");
+754:  const [newCallType, setNewCallType] = useState<
+757:  const [newCallPriority, setNewCallPriority] = useState<
+760:  const [newCallNotes, setNewCallNotes] = useState("");
+761:  const [callLogSearch, setCallLogSearch] = useState("");
+762:  const [callLogFilter, setCallLogFilter] = useState<
+765:  const [callLogPriorityFilter, setCallLogPriorityFilter] = useState<
+769:  const [newJobName, setNewJobName] = useState("");
+770:  const [newJobClientName, setNewJobClientName] = useState("");
+771:  const [newJobInvoiceId, setNewJobInvoiceId] = useState("");
+772:  const [newJobDueDate, setNewJobDueDate] = useState("");
+773:  const [newJobInitialTasks, setNewJobInitialTasks] = useState("");
+774:  const [jobSearchQuery, setJobSearchQuery] = useState("");
+775:  const [jobStatusFilter, setJobStatusFilter] = useState<
+778:  const [jobStartDateFilter, setJobStartDateFilter] = useState("");
+779:  const [jobEndDateFilter, setJobEndDateFilter] = useState("");
+780:  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
+783:  const [newTxType, setNewTxType] = useState<"income" | "expense">("expense");
+784:  const [newTxDate, setNewTxDate] = useState(
+787:  const [newTxCategory, setNewTxCategory] = useState(
+790:  const [newTxVendor, setNewTxVendor] = useState("");
+791:  const [newTxAmount, setNewTxAmount] = useState("");
+792:  const [newTxCurrency, setNewTxCurrency] = useState("$");
+793:  const [newTxNotes, setNewTxNotes] = useState("");
+794:  const [newTxTaxDeductible, setNewTxTaxDeductible] = useState(true);
+795:  const [isAddingTx, setIsAddingTx] = useState(false);
+797:  const [filterType, setFilterType] = useState<"all" | "income" | "expense">(
+800:  const [filterCategory, setFilterCategory] = useState("all");
+801:  const [filterStatus, setFilterStatus] = useState<
+804:  const [searchQuery, setSearchQuery] = useState("");
+807:  const [merchantPaypalEmail, setMerchantPaypalEmail] = useState(() => {
+817:  const [merchantPaypalLink, setMerchantPaypalLink] = useState(() => {
+827:  const [merchantEftBank, setMerchantEftBank] = useState(() => {
+837:  const [merchantEftAccount, setMerchantEftAccount] = useState(() => {
+847:  const [merchantEftBranch, setMerchantEftBranch] = useState(() => {
+857:  const [merchantEftHolder, setMerchantEftHolder] = useState(() => {
+867:  const [merchantStripeKey, setMerchantStripeKey] = useState(() => {
+877:  const [merchantGoogleVerify, setMerchantGoogleVerify] = useState(() => {
+887:  const [merchantCardActive, setMerchantCardActive] = useState(true);
+890:  const [payPlan, setPayPlan] = useState<"starter" | "growth" | "pro">(
+893:  const [billingInterval, setBillingInterval] = useState<"monthly" | "annual">(
+896:  const [payMethod, setPayMethod] = useState<"card" | "debit_order">("card");
+897:  const [selectedCurrency, setSelectedCurrency] = useState<
+900:  const [exchangeRates, setExchangeRates] = useState({
+907:  useEffect(() => {
+926:  useEffect(() => {
+990:  const [payDebitBank, setPayDebitBank] = useState("");
+991:  const [payDebitAcc, setPayDebitAcc] = useState("");
+992:  const [payDebitType, setPayDebitType] = useState("Savings");
+993:  const [payDebitConsent, setPayDebitConsent] = useState(false);
+994:  const [payCard, setPayCard] = useState("");
+995:  const [payExpiry, setPayExpiry] = useState("");
+996:  const [payCvc, setPayCvc] = useState("");
+997:  const [isPayingSim, setIsPayingSim] = useState(false);
+998:  const [paySuccessMsg, setPaySuccessMsg] = useState("");
+999:  const [payPendingRef, setPayPendingRef] = useState("");
+1000:  const [payEftFile, setPayEftFile] = useState("");
+1001:  const [payClaimSuccess, setPayClaimSuccess] = useState(false);
+1002:  const [catalog, setCatalog] = useState<ProfileCatalog>({
+1072:  const [aiPrompt, setAiPrompt] = useState("");
+1073:  const [aiLoading, setAiLoading] = useState(false);
+1074:  const [aiStatus, setAiStatus] = useState({
+1078:  const [activeTab, setActiveTab] = useState<
+1093:  const [bookkeepingSubtab, setBookkeepingSubtab] = useState<
+1096:  const [editorTab, setEditorTab] = useState<
+1139:  useEffect(() => {
+1145:  const [mobileEditorTab, setMobileEditorTab] = useState<"edit" | "preview">(
+1148:  const [isAdvDocOpen, setIsAdvDocOpen] = useState(false);
+1149:  const [isAdvSenderOpen, setIsAdvSenderOpen] = useState(false);
+1150:  const [isAdvClientOpen, setIsAdvClientOpen] = useState(false);
+1151:  const [showSidebar, setShowSidebar] = useState(false);
+1153:    useState<string>("");
+1154:  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+1155:  const [calculatingItemIds, setCalculatingItemIds] = useState<string[]>([]);
+1156:  const [basicAccordion, setBasicAccordion] = useState<string>("issuer");
+1157:  const [footerAccordion, setFooterAccordion] = useState<string>("notes");
+1158:  const [aiParseStage, setAiParseStage] = useState<string | null>(null);
+1159:  const [showTaxFields, setShowTaxFields] = useState(false);
+1162:  const [syncStatus, setSyncStatus] = useState<
+1165:  const [lastSyncedTime, setLastSyncedTime] = useState<string | null>(null);
+1166:  const [lastCsvSyncTime, setLastCsvSyncTime] = useState<string>(() => {
+1176:  const [isRefreshingLedger, setIsRefreshingLedger] = useState<boolean>(false);
+1177:  const [activeDocCloudId, setActiveDocCloudId] = useState<string | null>(null);
+1178:  const lastStateRef = useRef<string>("");
+1179:  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+1180:  const [pendingSyncCount, setPendingSyncCount] = useState<number>(0);
+1181:  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+1185:  useEffect(() => {
+1195:  useEffect(() => {
+1211:  const [currencyFetchInfo, setCurrencyFetchInfo] = useState<{
+1219:  const [isFetchingRate, setIsFetchingRate] = useState(false);
+1220:  const [rateFetchError, setRateFetchError] = useState<string | null>(null);
+1405:  const [userProfile, setUserProfile] = useState<UserAccount | null>(null);
+1408:  const [triggeredReminderPopup, setTriggeredReminderPopup] = useState<{
+1416:  const [activeTimers, setActiveTimers] = useState<any[]>([]);
+1452:  useEffect(() => {
+1506:  const [isAuthOpen, setIsAuthOpen] = useState(false);
+1507:  const [authInitialMode, setAuthInitialMode] = useState<"login" | "signup">(
+1510:  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+1511:  const [isCurrentDocPaid, setIsCurrentDocPaid] = useState(false);
+1512:  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+1513:  const [isImportItemsModalOpen, setIsImportItemsModalOpen] = useState(false);
+1514:  const [selectedImportItems, setSelectedImportItems] = useState<string[]>([]);
+1515:  const [printSettings, setPrintSettings] = useState<{
+1530:  const [incompleteValidationAction, setIncompleteValidationAction] = useState<{
+1546:  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+1547:  const [loadedHistoryItemId, setLoadedHistoryItemId] = useState<string | null>(
+1550:  const [sharedDocData, setSharedDocData] = useState<DocumentData | null>(null);
+1551:  const [waMessageType, setWaMessageType] = useState<"summary" | "pdf">(
+1554:  const [waIncludeItems, setWaIncludeItems] = useState(true);
+1555:  const [waIncludePaymentLink, setWaIncludePaymentLink] = useState(true);
+1556:  const [waCustomGreeting, setWaCustomGreeting] = useState("");
+1557:  const [waRecipientPhone, setWaRecipientPhone] = useState("");
+1558:  const [waCustomMessage, setWaCustomMessage] = useState("");
+1559:  const [recentWaContacts, setRecentWaContacts] = useState<RecentWaContact[]>(
+1574:  const [isClientHistoryOpen, setIsClientHistoryOpen] = useState(false);
+1575:  const [clientHistoryName, setClientHistoryName] = useState("");
+1576:  const [clientHistoryDocs, setClientHistoryDocs] = useState<SavedHistory[]>(
+1872:  const [recurringSchedules, setRecurringSchedules] = useState<any[]>([]);
+1873:  const [schedClient, setSchedClient] = useState<string>("");
+1874:  const [schedFrequency, setSchedFrequency] = useState<
+1877:  const [schedNextRunDate, setSchedNextRunDate] = useState<string>(
+1880:  const [loadingRecurring, setLoadingRecurring] = useState(false);
+1907:  useEffect(() => {
+1912:  useEffect(() => {
+2249:  useEffect(() => {
+2265:  useEffect(() => {
+2279:  useEffect(() => {
+2289:  useEffect(() => {
+2293:  const isUnlocked = useMemo(() => {
+2340:  const appTrialStatus = useMemo(() => {
+2368:  const [activePromptHubTab, setActivePromptHubTab] = useState<
+2371:  const [helpDocType, setHelpDocType] = useState("invoice");
+2372:  const [helpClientName, setHelpClientName] = useState("Neural Mind Studio");
+2373:  const [helpItemName, setHelpItemName] = useState(
+2376:  const [helpQty, setHelpQty] = useState(40);
+2377:  const [helpRate, setHelpRate] = useState(120);
+2378:  const [helpDeduction, setHelpDeduction] = useState("10% holiday discount");
+2379:  const [helpTerms, setHelpTerms] = useState("due in 14 days");
+2382:  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+2383:  const [isDrawing, setIsDrawing] = useState(false);
+2384:  const [signatureColor, setSignatureColor] = useState<string>("#8B5CF6");
+2385:  const [signatureWeight, setSignatureWeight] = useState<number>(2.5);
+2386:  const [autoClearSignature, setAutoClearSignature] = useState(false);
+2387:  const [showStatusAlert, setShowStatusAlert] = useState<string | null>(null);
+2390:  const [historySearch, setHistorySearch] = useState("");
+2391:  const [historyStartDate, setHistoryStartDate] = useState("");
+2392:  const [historyEndDate, setHistoryEndDate] = useState("");
+2394:  const filteredHistory = useMemo(() => {
+2446:  const [selectedIndustry, setSelectedIndustry] = useState("freelancers");
+2447:  const [itemSortState, setItemSortState] = useState<{
+2451:  const [isListening, setIsListening] = useState(false);
+2452:  const [listeningTarget, setListeningTarget] = useState<
+2455:  const listeningTargetRef = useRef<
+2458:  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+2459:  const [isDraggingLogo, setIsDraggingLogo] = useState(false);
+2460:  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
+2461:  const [showLateReminder, setShowLateReminder] = useState(false);
+2463:  useEffect(() => {
+2501:  const recognitionRef = useRef<any>(null);
+2503:  useEffect(() => {
+2656:  useEffect(() => {
+2680:  useEffect(() => {
+2697:  useEffect(() => {
+2831:  const [currencySuggestion, setCurrencySuggestion] = useState<string | null>(
+2834:  const [taxSuggestion, setTaxSuggestion] = useState<number | null>(null);
+2835:  useLocaleDetector(
+3040:  const [pdfGenerating, setPdfGenerating] = useState(false);
+3041:  const [imageGenerating, setImageGenerating] = useState(false);
+3042:  const [isInvoiceReady, setIsInvoiceReady] = useState(true);
+3043:  const [forcedBadgeStatus, setForcedBadgeStatus] = useState<string | null>(
+3048:  useEffect(() => {
+3209:        useCORS: true,
+3488:        useCORS: true, // Crucial for custom logo or font rendering
+4043:      | React.MouseEvent<HTMLCanvasElement>
+4069:      | React.MouseEvent<HTMLCanvasElement>
+4833:  const deleteHistoryItem = (id: string, e: React.MouseEvent) => {
+18275:                                    onMouseDown={startDrawing}
+18276:                                    onMouseMove={draw}
+18277:                                    onMouseUp={stopDrawing}
+18278:                                    onMouseLeave={stopDrawing}

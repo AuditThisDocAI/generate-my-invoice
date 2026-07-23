@@ -1,0 +1,297 @@
+235:  if (!doc) return false;
+247:  return matchesPreset;
+252:    return "rgb(120, 120, 120)";
+258:  return oklabToRgb(L, a_, b_, a);
+271:    return "rgb(120, 120, 120)";
+287:    if (isNaN(x) || !isFinite(x)) return 0.5;
+288:    return x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
+301:  return a === 1 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${a})`;
+305:  if (!text) return "";
+336:        return oklchToRgb(l, c, h, a);
+338:        return "rgb(120, 120, 120)";
+359:        return oklabToRgb(l, aVal, bVal, alpha);
+361:        return "rgb(120, 120, 120)";
+366:  return cleaned;
+379:  return new Blob([u8arr], { type: mime });
+580:    if (taxAuditPreset === "custom") return;
+611:      if (saved) return JSON.parse(saved);
+613:    return [
+650:      if (saved) return JSON.parse(saved);
+652:    return [
+812:      return cfg.paypalEmail || "brigittalombard09@gmail.com";
+814:      return "brigittalombard09@gmail.com";
+822:      return cfg.paypalLink || "";
+824:      return "";
+832:      return cfg.eftBank || "Capitec Bank";
+834:      return "Capitec Bank";
+842:      return cfg.eftAccount || "2547977857";
+844:      return "2547977857";
+852:      return cfg.eftBranch || "CABLZAJJ";
+854:      return "CABLZAJJ";
+862:      return cfg.eftHolder || "Generate My Invoice";
+864:      return "Generate My Invoice";
+872:      return cfg.stripePublicKey || "";
+874:      return "";
+882:      return cfg.googleVerificationCode || "";
+884:      return "";
+911:        return res.json();
+967:          return {
+973:        return prev;
+1103:        return [
+1111:        return [
+1118:        return [
+1167:    return (
+1182:    return localStorage.getItem("gmi_dark_mode") === "true";
+1207:    return () => clearInterval(timer);
+1228:    if (oldSymbol === newSymbol) return;
+1233:    if (oldCode === newCode) return;
+1381:    if (!rate || isNaN(rate)) return;
+1389:      return {
+1458:          return;
+1466:          if (t.triggered) return;
+1504:    return () => clearInterval(intervalId);
+1539:    if (!hasIncompleteLines) return true;
+1541:    return new Promise<boolean>((resolve) => {
+1564:          return JSON.parse(stored);
+1569:      return [];
+1590:      return;
+1596:      if (!itemDoc) return false;
+1603:      return nameMatch || companyMatch;
+1620:      return;
+1626:      if (!itemDoc) return false;
+1629:      return (
+1639:      return;
+1723:      if (!docDetails) return;
+1948:    if (!activeProfile) return;
+1953:        return;
+2026:      return;
+2124:            `📡 Saved locally offline! It will autosync once connection returns.`,
+2147:        if (invoices.length === 0) return;
+2154:          return {
+2202:          return merged;
+2252:      return;
+2266:    if (!userProfile) return;
+2275:    return () => clearInterval(intervalId);
+2295:      return true;
+2302:      return true;
+2318:        return true;
+2329:      return true;
+2332:      return true;
+2335:      return true;
+2337:    return false;
+2364:    return { active, daysLeft, isExpired };
+2395:    return history.filter((record) => {
+2397:      if (!doc) return false;
+2442:      return matchesSearch && matchesDate;
+2619:                  return {
+2624:                return it;
+2631:              return prev + separator + transcript;
+2673:    return () => {
+2765:      return () => unsubscribe();
+2860:      return;
+2907:        return;
+2913:        return;
+2967:        return;
+2973:        return;
+3002:    if (!dateStr) return "";
+3006:    if (parts.length !== 3) return dateStr; // Fallback if format is unexpected
+3016:        return `${day}/${month}/${year}`;
+3018:        return `${month}/${day}/${year}`;
+3020:        return `${day}-${month}-${year}`;
+3027:        if (isNaN(dateObj.getTime())) return dateStr;
+3028:        return dateObj.toLocaleDateString("en-US", {
+3036:        return dateStr;
+3053:    return () => clearTimeout(timer);
+3138:    return element;
+3147:      return;
+3155:      return;
+3162:      return;
+3172:      return;
+3215:            return true;
+3217:          return false;
+3225:              return new Proxy(style, {
+3233:                    return translateOklchStylesInText(value);
+3235:                  return value;
+3338:      return;
+3349:          return;
+3384:      return;
+3395:          return;
+3424:      return;
+3432:      return;
+3439:      return;
+3449:      return;
+3494:            return true;
+3496:          return false;
+3504:              return new Proxy(style, {
+3512:                    return translateOklchStylesInText(value);
+3514:                  return value;
+3683:      return;
+3691:      return;
+3701:      return;
+3727:      return;
+3735:      return;
+3745:      return;
+3831:    if (!aiPrompt.trim()) return;
+3929:    if (!forcedPrompt.trim()) return;
+4026:      return;
+4047:    if (!canvas) return;
+4049:    if (!ctx) return;
+4072:    if (!isDrawing) return;
+4074:    if (!canvas) return;
+4076:    if (!ctx) return;
+4133:            return nextDirection === "asc"
+4139:            return nextDirection === "asc" ? valA - valB : valB - valA;
+4141:          return 0;
+4143:        return {
+4149:      return { key, direction: nextDirection };
+4162:    if (!catalog.savedProducts || selectedImportItems.length === 0) return;
+4168:      return;
+4182:    if (!catalog.savedProducts) return;
+4190:          return;
+4241:      if (!itemToClone) return prev;
+4249:      return {
+4262:          return { ...item, ...updates };
+4264:        return item;
+4274:    if (!itemName) return;
+4341:          return { label, value };
+4343:        return field;
+4361:      return sum + (taxableAmount + taxAmount);
+4370:    return {
+4432:        return {
+4439:      return j;
+4446:    if (!taskName.trim()) return;
+4449:        return {
+4457:      return j;
+4475:    if (jobIds.length === 0) return;
+4488:    if (jobIds.length === 0) return;
+4521:      return;
+4590:        return [
+4668:        return [
+4719:    return activeDoc.items.reduce((sum, item) => {
+4728:      return sum + (taxableAmount + taxAmount);
+4748:      return;
+4767:          return;
+4773:          return;
+4841:    if (!record.documentData) return;
+4909:      return;
+4986:    return msg;
+5015:      return;
+5023:      return;
+5295:      return updated;
+5816:  return (
+6704:                      return (
+6818:                      return (
+7042:                        if (y !== varianceYear) return null;
+7043:                        return Math.floor(m / 3) + 1;
+7053:                        if (fYear !== varianceYear) return null;
+7054:                        return fQ;
+7065:                        return;
+7067:                      if (forensicStartDate && d < forensicStartDate) return;
+7068:                      if (forensicEndDate && d > forensicEndDate) return;
+7093:                        if (forensicStartDate && d < forensicStartDate) return;
+7094:                        if (forensicEndDate && d > forensicEndDate) return;
+7130:                    return (
+7230:                            Standard vs Adjusted Return
+7402:                    return (
+7440:                  return (
+7604:                    return (
+7669:                    if (startD > endD) return [];
+7697:                        return;
+7702:                        return;
+7703:                      if (taxAuditEndDate && dateStr > taxAuditEndDate) return;
+7727:                        return;
+7728:                      if (taxAuditEndDate && dateStr > taxAuditEndDate) return;
+7745:                    return months;
+7818:                    return Object.entries(sources)
+7864:                        return;
+7904:                    return months;
+7916:                      if (e.type === "income") return;
+7920:                    return Object.entries(categories)
+7954:                      return {
+8012:                      return (
+8048:                      return;
+8055:                      return;
+8077:                  return (
+8406:                                      return (
+8598:                                        if (!element) return;
+8799:                                      return (
+8946:                                            return null;
+8950:                                          return (
+9352:                                      return (
+9549:                                  return sortedKeys.map((k) => monthlyData[k]);
+9871:                        if (!docDetails) return null;
+9892:                        return (
+9929:                                        return `Sent via WhatsApp: ${new Date(docDetails.last_sent_via_whatsapp).toLocaleString()}`;
+9931:                                        return "Sent via WhatsApp";
+10062:                    return (
+10116:                          if (!newJobName.trim()) return;
+10392:                          return (
+10398:                          return (
+10432:                              return union;
+10437:                        return (
+10555:                                return (
+10788:                    return (
+10884:                            return;
+11039:                                return (
+11123:                              return (
+11148:                                return (
+11200:                          return (
+11206:                          return (
+11220:                        return (
+11230:                              return (
+11291:                                          return (
+11409:                        return sum + afterD + tx;
+11419:                      return {
+11472:                    return matchesSearch && matchesStatus;
+11492:                    return matchesSearch && matchesStatus;
+11497:                    return (
+11604:                  return (
+11781:                                return (
+11994:                                    return;
+12005:                                      return;
+12085:                                  return;
+12347:                                        if (!dueDateStr) return 0;
+12358:                                          if (isNaN(dueTime)) return 0;
+12363:                                          return diffDays > 0 ? diffDays : 0;
+12365:                                          return 0;
+12414:                                      return (
+12523:                                                            return (
+12569:                                                    return;
+12600:                                                  return;
+12643:                                  return;
+12928:                                        if (!dueDateStr) return 0;
+12939:                                          if (isNaN(dueTime)) return 0;
+12944:                                          return diffDays > 0 ? diffDays : 0;
+12946:                                          return 0;
+12994:                                      return (
+13835:                              return (
+14410:                                                return updated;
+14762:                                              return;
+14982:                                            return (
+15248:                                        return (
+17022:                                        return (
+17056:                                      return (
+17262:                                                  return (taxableAmount * (1 + item.taxPercent / 100));
+17332:                                            return acc;
+17352:                                          return {
+17373:                                      return (
+17380:                                                return (
+17508:                                                            return (
+17545:                                                          return null;
+17564:                                                    return (
+17648:                                        return;
+17804:                                            return (
+17818:                                          return null;
+18513:                                        return;
+18608:                                      return (
+19103:                            return (
+20007:                                          if (!chunk) return null;
+20008:                                          return (
+20190:                                        return (
+20838:                  return (
+21990:                        return updated;
+22010:                          return {
+22018:                        return item;
+22033:                      return updatedHistory;
+22109:                      if (!docDetails) return null;
+22142:                      return (

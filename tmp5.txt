@@ -1,0 +1,125 @@
+931:      setActiveDoc((prev) => {
+1188:    setActiveDoc((prev) => ({ ...prev, currency: newSymbol }));
+1345:    setActiveDoc((prev) => {
+2383:          setActiveDoc(parsed);
+2517:            setActiveDoc((prev) => ({
+2798:        setActiveDoc((prev) => ({
+2835:    setActiveDoc((prev) => ({ ...prev, logoText: "LOGO SPEC" }));
+2857:        setActiveDoc((prev) => ({
+2875:    setActiveDoc((prev) => ({ ...prev, resumePhotoUrl: undefined }));
+3749:      setActiveDoc(nextDoc);
+3846:      setActiveDoc(nextDoc);
+3886:    setActiveDoc((prev) => ({
+3952:      setActiveDoc((prev) => ({
+3965:        setActiveDoc((prev) => ({
+3979:      setActiveDoc((currentDoc) => {
+4022:    setActiveDoc((prev) => ({
+4029:    setActiveDoc((prev) => ({
+4036:    setActiveDoc((prev) => {
+4055:    setActiveDoc((prev) => ({
+4116:    setActiveDoc((prev) => ({
+4123:    setActiveDoc((prev) => ({
+4134:    setActiveDoc((prev) => ({
+4650:    setActiveDoc(duplicatedDoc);
+4681:    setActiveDoc(clonedDoc);
+4861:    setActiveDoc((prev) => ({
+4874:    setActiveDoc((prev) => ({
+4896:    setActiveDoc((prev) => ({
+4920:    setActiveDoc({
+4980:    setActiveDoc((prev) => {
+5098:    setActiveDoc({
+5281:      setActiveDoc(newDoc);
+5302:      setActiveDoc({
+5351:      setActiveDoc({
+5401:      setActiveDoc({
+5460:      setActiveDoc({
+5514:      setActiveDoc(agencyDoc);
+5518:      setActiveDoc({
+5583:      setActiveDoc(hospitalityDoc);
+5592:      setActiveDoc(retailDoc);
+5640:                setActiveDoc({ ...activeDoc, currency: currencySuggestion });
+8895:                                  setActiveDoc({ ...docDetails });
+12605:                                setActiveDoc((prev) => ({
+12863:                                              setActiveDoc((prev) => ({
+12887:                                                setActiveDoc((prev) => ({
+12908:                                              setActiveDoc((prev) => ({
+12925:                                              setActiveDoc((prev) => ({
+12945:                                            setActiveDoc((prev) => ({
+12972:                                                setActiveDoc((prev) => ({
+13038:                                                setActiveDoc((prev) => ({
+13058:                                                      setActiveDoc((prev) => ({
+13098:                                                setActiveDoc((prev) => ({
+13140:                                                setActiveDoc((prev) => ({
+13163:                                                setActiveDoc((prev) => ({
+13185:                                                setActiveDoc((prev) => ({
+13212:                                              setActiveDoc((prev) => ({
+13218:                                              setActiveDoc((prev) => {
+13236:                                              setActiveDoc((prev) => ({
+13266:                                                  setActiveDoc((prev) => ({
+13376:                                                    setActiveDoc({
+13396:                                                    setActiveDoc({
+13423:                                                setActiveDoc({
+13441:                                                  setActiveDoc({
+13464:                                              setActiveDoc({
+13535:                                              setActiveDoc((prev) => ({
+13585:                                            setActiveDoc((prev) => ({
+13651:                                                    setActiveDoc({
+13656:                                                    setActiveDoc({
+13705:                                                    setActiveDoc({
+13710:                                                    setActiveDoc({
+13806:                                                  setActiveDoc((prev) => ({
+13841:                                              setActiveDoc((prev) => ({
+13883:                                                setActiveDoc((prev) => ({
+13947:                                        setActiveDoc({
+13965:                                        setActiveDoc({
+13984:                                        setActiveDoc({
+14028:                                          setActiveDoc({
+14072:                                              setActiveDoc((prev) => ({
+14106:                                          setActiveDoc({
+14125:                                          setActiveDoc({
+14144:                                        setActiveDoc({
+14199:                                          onChange={(e) => setActiveDoc({ ...activeDoc, dualCurrencyEnabled: e.target.checked })}
+14210:                                              onChange={(e) => setActiveDoc({ ...activeDoc, secondaryCurrency: e.target.value })}
+14234:                                                onChange={(e) => setActiveDoc({ ...activeDoc, secondaryCurrencyRate: parseFloat(e.target.value) || 1 })}
+14337:                                          setActiveDoc({
+14455:                                              setActiveDoc({
+14460:                                              setActiveDoc({
+14504:                                              setActiveDoc({
+14509:                                              setActiveDoc({
+14540:                                            setActiveDoc({
+14578:                                            setActiveDoc({
+14598:                                            setActiveDoc({
+14623:                                            setActiveDoc({
+14644:                                            setActiveDoc({
+14668:                                            setActiveDoc({
+14684:                                            setActiveDoc({
+14703:                                            setActiveDoc({
+14728:                                            setActiveDoc({
+14748:                                            setActiveDoc({
+14768:                                            setActiveDoc({
+14877:                                            setActiveDoc({
+14896:                                            setActiveDoc({
+14918:                                            setActiveDoc({
+14939:                                              setActiveDoc({
+14959:                                              setActiveDoc({
+14999:                                              setActiveDoc({
+15019:                                              setActiveDoc({
+15039:                                            setActiveDoc({
+15060:                                              setActiveDoc({
+15080:                                              setActiveDoc({
+15303:                                        setActiveDoc({
+15344:                                          setActiveDoc({
+15367:                                        setActiveDoc({
+16465:                                        setActiveDoc((prev) => ({
+16507:                                          setActiveDoc({
+16525:                                          setActiveDoc({
+16543:                                          setActiveDoc({
+16562:                                          setActiveDoc({
+16662:                                      setActiveDoc({
+16693:                                            setActiveDoc((prev) => ({
+16743:                                      setActiveDoc({
+16775:                                        setActiveDoc((prev) => ({
+16817:                                          setActiveDoc({
+16885:                                      setActiveDoc({
+20072:                    setActiveDoc((prev) => ({
+20307:                                setActiveDoc({ ...docDetails });

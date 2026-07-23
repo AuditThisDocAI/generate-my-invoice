@@ -1,0 +1,6 @@
+15553:                              const isActive = editorTab === tb.key;
+15598:                          {editorTab === "basic" && (
+18453:                          {editorTab === "parties" && (
+18700:                          {editorTab === "items" && (
+20164:                          {editorTab === "footer" && (
+20670:                          {editorTab === "recurring" && (

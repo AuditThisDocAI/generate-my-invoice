@@ -1,0 +1,6 @@
+{
+  "name": "Audit This Doc AI",
+  "description": "Premium business document platform 'Audit This Doc AI' — an AI Business Document Operating System for invoices, receipts, quotations, purchase orders, estimates, and business slips powered by Gemini.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
