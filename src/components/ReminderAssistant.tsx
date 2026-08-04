@@ -1517,16 +1517,7 @@ export default function ReminderAssistant({
           </div>
 
           {/* Action trigger deck */}
-          <div className="flex items-center gap-3">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs uppercase cursor-pointer tracking-wider flex items-center justify-center gap-2 duration-150 shadow-sm shadow-violet-200 disabled:opacity-50 font-sans font-black"
-            >
-              <Send className="w-3.5 h-3.5" /> {scheduleDelay === "immediate" ? (calendarToken ? "Send via Google Workspace (Gmail)" : "Send Immediate Email (SMTP Server)") : "Schedule Automated Email follow-up"}
-            </button>
-          </div>
-        </form>
+                  </form>
 
         {/* Right Logs / History Monitor column */}
         <div className="lg:col-span-5 space-y-4 flex flex-col min-h-[350px]">

@@ -1376,14 +1376,7 @@ export default function AdminHub({ currentAdminEmail, onUserDbChange }: AdminHub
               </div>
             </div>
 
-            {/* Custom SMTP Email Dispatch Config Card */}
-            <div className="bg-zinc-50/50 border border-zinc-200 rounded-3xl p-6 space-y-4 hover:border-zinc-350 transition-colors shadow-2xs">
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-150 font-sans">
-                <h4 className="font-black text-xs uppercase text-zinc-805 flex items-center gap-1.5 align-middle">
-                  📧 Email Dispatch & SMTP Server
-                </h4>
-                <span className="text-[8px] font-mono bg-violet-100 px-2 py-0.5 rounded-full text-violet-800 font-extrabold tracking-wider">OUTBOUND SERVER</span>
-              </div>
+
 
               <div className="space-y-3">
                 <div className="grid grid-cols-3 gap-2">
@@ -1489,7 +1482,7 @@ export default function AdminHub({ currentAdminEmail, onUserDbChange }: AdminHub
               </div>
             </div>
 
-          </div>
+          
 
           {/* South Africa EFT direct banking details section */}
           <div className="bg-zinc-50/50 border border-zinc-200 rounded-3xl p-6 space-y-4 hover:border-zinc-350 transition-colors shadow-2xs">

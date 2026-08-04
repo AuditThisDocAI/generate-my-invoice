@@ -13,13 +13,9 @@ dotenv.config();
 // Initialize Firebase Admin safely
 let firestore: any = null;
 try {
-  if (!getApps().length) {
-    initializeApp({
-      projectId: "gen-lang-client-0659809318"
-    });
-  }
+projectId: "auditthisdocai"
   firestore = getFirestore();
-  firestore.settings({ databaseId: "ai-studio-0271fcb5-9865-40c3-b99f-2ff7b0e214a4" });
+  
 } catch (err) {
   console.warn("Failed to initialize Firebase Admin:", err);
 }
@@ -90,6 +86,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Initialize the GoogleGenAI client safely.
 const apiKey = process.env.GEMINI_API_KEY;
+console.log("GEMINI KEY EXISTS:", !!process.env.GEMINI_API_KEY);
+console.log("GEMINI KEY LENGTH:", process.env.GEMINI_API_KEY?.length);
 let ai: GoogleGenAI | null = null;
 
 if (apiKey) {
