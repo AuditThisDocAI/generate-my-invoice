@@ -730,13 +730,7 @@ export default function AriaAuditor({
             >
               Audit Workspace Draft
             </button>
-            <button
-              type="button"
-              onClick={() => setActiveAuditorMode("external")}
-              className={`flex-1 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${activeAuditorMode === "external" ? "bg-white text-zinc-950 shadow-2xs border border-zinc-150" : "text-zinc-500 hover:text-zinc-900"}`}
-            >
-              Upload PDF/Images
-            </button>
+         
           </div>
 
           {activeAuditorMode === "workspace" ? (
