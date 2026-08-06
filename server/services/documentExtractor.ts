@@ -182,6 +182,45 @@ function parseJsonText(text: string): any {
   }
 }
 
+
+
+export async function extractDocument(params: ExtractDocumentParams): Promise<ExtractDocumentResult> {
+  const { ai, fileData, mimeType, filename } = params;
+  if (!fileData) {
+    return { error: "File data is required." };
+  }
+
+  if (!ai) {
+    return { error: "AI services are not available. Please configure GEMINI_API_KEY." };
+  }
+
+  const prompt = buildScanPrompt(filename);
+  const base64Data = fileData.replace(/^data:.*?;base64,/, "");
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-pro",
+    contents: [
+      { text: prompt },
+      {
+        inlineData: {
+          mimeType: mimeType || "application/pdf",
+          data: base64Data
+        }
+      }
+    ],
+    config: {
+      temperature: 0.1,
+      responseMimeType: "application/json",
+      responseSchema: buildScanResponseSchema()
+    }
+  });
+
+  const outputText = response.text || "{}";
+  const parsed = parseJsonText(outputText);
+  return parsed;
+}
+
+
 export async function generateAudit(params: GenerateAuditParams): Promise<any> {
   const { ai, documentData } = params;
 

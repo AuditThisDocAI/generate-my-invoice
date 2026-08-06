@@ -7,7 +7,7 @@ import Stripe from "stripe";
 import crypto from "crypto";
 import { initializeApp, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { extractDocument, generateAudit } from "./server/services/documentExtractor.ts";
+import { extractDocument, generateAudit } from "./";
 
 dotenv.config();
 
