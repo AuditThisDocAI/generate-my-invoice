@@ -13342,7 +13342,7 @@ export default function App() {
                             </h3>
 
                             <div className="space-y-4">
-                              <button
+                            
                               
                               <div className="border-t border-zinc-200 pt-4 space-y-3">
                                 <h4 className="text-xs font-bold text-zinc-800">
