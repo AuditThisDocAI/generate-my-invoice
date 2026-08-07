@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;650;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;650;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -42,9 +42,9 @@
   --color-zinc-400: var(--theme-zinc-400);
   --color-zinc-500: var(--theme-zinc-500);
   --color-zinc-600: var(--theme-zinc-600);
-  --color-zinc-700: var(--theme-zinc-700);
-  --color-zinc-800: var(--theme-text-sec);
-  --color-zinc-900: var(--theme-text-main);
+  --color-zinc-700: var(--theme-text-sec);
+  --color-zinc-800: var(--theme-text-main);
+  --color-zinc-900: var(--theme-text-strong);
   --color-zinc-950: var(--theme-text-strong);
 }
 
@@ -263,3 +263,91 @@ img, video, iframe, [data-invert-ignore="true"] {
   background: rgba(139, 92, 246, 0.3);
 }
 
+/* --------------------- DESKTOP WORKSPACE ENHANCEMENTS --------------------- */
+/* These rules improve spacing, fixed sidebars and readable layout for desktop screens */
+@media (min-width: 1200px) {
+  /* Central workspace container width and padding */
+  #main_workspace_container,
+  #workspace_frame,
+  #app_root {
+    max-width: 1400px;
+    margin: 18px auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  body {
+    font-size: 112%;
+  }
+
+  /* Provide a predictable three-column layout for the workspace on large screens */
+  .workspace-columns {
+    display: grid;
+    grid-template-columns: 320px 1fr 360px; /* left sidebar, editor, right utilities */
+    gap: 22px;
+    align-items: start;
+  }
+
+  /* Make the left sidebar sticky so tools remain accessible while editing */
+  #doc_layout_aside {
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    overflow: auto;
+    padding-right: 6px;
+  }
+
+  /* Editor area should be flexible and maintain vertical rhythm */
+  #form_editor_pane {
+    min-height: calc(100vh - 160px);
+    overflow: auto;
+  }
+
+  /* Right panel helper sticky */
+  .workspace-right-panel, #right_control_panel {
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    overflow: auto;
+  }
+
+  /* Slightly larger, denser card styles for desktop */
+  .rounded-3xl { border-radius: 14px; }
+  .p-5 { padding: 18px; }
+
+  /* Make modals and previews wider on desktop */
+  .modal-lg, .preview-modal { max-width: 1100px; }
+
+  /* Ensure header and nav are visible and do not overlap content */
+  #navbar { position: sticky; top: 0; z-index: 60; }
+
+  /* Improve contrast for body text on large screens */
+  .text-zinc-900, .text-zinc-950 { color: var(--theme-text-main) !important; }
+
+  /* Show desktop-only helper UI when appropriate */
+  .desktop-only { display: block !important; }
+  .mobile-only { display: none !important; }
+
+  /* Reduce shadow intensity on large screens for a cleaner look */
+  .shadow-2xs, .shadow-xs, .shadow-sm { box-shadow: 0 4px 18px rgba(2,6,23,0.06); }
+
+  /* Improve editor input sizes */
+  input[type="text"], input[type="email"], textarea, select {
+    font-size: 14px;
+  }
+
+  /* Prevent overlapping toasts and sidebars */
+  .toast-container, .system-toast { z-index: 80; }
+
+  /* Slightly wider gutters for grids to avoid cramped content */
+  .grid-gap-lg { gap: 28px; }
+
+  /* Make action buttons easier to target with mouse */
+  button, .btn { min-height: 36px; padding-left: 12px; padding-right: 12px; }
+}
+
+/* Fallback: ensure mobile styles remain unaffected */
+@media (max-width: 1199px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+}
