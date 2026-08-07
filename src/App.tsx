@@ -2191,14 +2191,19 @@ export default function App() {
         lineSummary.length > 90
           ? lineSummary.substring(0, 87) + "..."
           : lineSummary;
-      doc.text(truncatedLineSummary, 60, y);
+     const wrappedSummary = doc.splitTextToSize(lineSummary, 95);
+doc.text(wrappedSummary, 60, y);
+
+const summaryHeight = wrappedSummary.length * 4;
 
       // Thin line separator
       doc.setDrawColor(241, 245, 249);
       doc.setLineWidth(0.3);
-      doc.line(14, y + 2.5, 196, y + 2.5);
+     const lineY = y + summaryHeight + 2;
 
-      y += 6;
+doc.line(14, lineY, 196, lineY);
+
+y += summaryHeight + 6;
     });
 
     // Bottom aggregate calculations

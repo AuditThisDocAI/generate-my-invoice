@@ -1,256 +1,409 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { DocumentData } from "../types";
+import { DocumentData, DocumentItem } from "../types";
 
 const themeColors: Record<string, number[]> = {
+  violet: [99, 102, 241],
+  gold: [217, 119, 6],
   emerald: [16, 185, 129],
-  blue: [59, 130, 246],
-  indigo: [99, 102, 241],
-  violet: [139, 92, 246],
-  fuchsia: [217, 70, 239],
+  sapphire: [59, 130, 246],
   rose: [244, 63, 94],
-  amber: [245, 158, 11],
-  slate: [100, 116, 139],
-  zinc: [113, 113, 122],
-  neutral: [115, 115, 115],
-  stone: [120, 113, 108],
-  orange: [249, 115, 22],
+  charcoal: [31, 41, 55],
 };
 
-export const generateStructuredPDF = async (docData: DocumentData, logoUrl: string | null, signatureUrl: string | null, totals: any) => {
-  const doc = new jsPDF({
-    orientation: "portrait",
-    unit: "pt",
-    format: "a4",
-  });
+const BLACK = [0, 0, 0] as const;
+const PAGE_MARGIN = 40;
+const BOTTOM_MARGIN = 60;
+const TABLE_MARGIN_TOP = 18;
+const LINE_HEIGHT = 14;
 
+const safeNumber = (value: unknown): number => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const parsed = Number(value.replace(/[^0-9.-]+/g, ""));
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+};
+
+const formatCurrency = (value: number, symbol: string): string => {
+  return `${symbol}${value.toFixed(2)}`;
+};
+
+const loadImageDataUrl = async (url: string | null): Promise<string | null> => {
+  if (!url) return null;
+
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        resolve(null);
+        return;
+      }
+      context.drawImage(image, 0, 0);
+      try {
+        resolve(canvas.toDataURL("image/png"));
+      } catch {
+        resolve(null);
+      }
+    };
+    image.onerror = () => resolve(null);
+    image.src = url;
+  });
+};
+
+const ensurePageSpace = (doc: jsPDF, currentY: number, requiredHeight: number): number => {
+  const pageHeight = doc.internal.pageSize.getHeight();
+  if (currentY + requiredHeight > pageHeight - BOTTOM_MARGIN) {
+    doc.addPage();
+    return PAGE_MARGIN;
+  }
+  return currentY;
+};
+
+const drawFooter = (doc: jsPDF, pageNumber: number, pageCount: number) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  let currentY = 40;
 
-  const themeName = docData.themeColor || "violet";
-  const primaryColor = themeColors[themeName] || [139, 92, 246];
-  const textColor = [40, 40, 40];
-  const grayColor = [110, 110, 110];
-
-  // Header Background for some themes
-  if ((docData.themeLayout as any) === "modern_wave" || (docData.themeLayout as any) === "impact_solid") {
-    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.rect(0, 0, pageWidth, 100, 'F');
-    doc.setTextColor(255, 255, 255);
-  } else {
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  }
-
-  doc.setFontSize(28);
-  doc.setFont("helvetica", "bold");
-  const docTitle = (docData.customTypeName || docData.documentType || "INVOICE").toUpperCase();
-  doc.text(docTitle, pageWidth - 40, 60, { align: 'right' });
-  
-  if (logoUrl) {
-    try {
-      doc.addImage(logoUrl, 'PNG', 40, 30, 120, 45, undefined, 'FAST');
-    } catch (e) {
-      console.warn("Failed to embed logo", e);
-    }
-  }
-
-  currentY = 130;
-  
-  // Document Info
-  doc.setFontSize(10);
-  doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-  doc.setFont("helvetica", "bold");
-  doc.text(`Reference: ${docData.documentNumber || ""}`, pageWidth - 40, currentY, { align: 'right' });
-  currentY += 15;
+  doc.setDrawColor(200);
+  doc.setLineWidth(0.5);
+  doc.line(PAGE_MARGIN, pageHeight - BOTTOM_MARGIN + 10, pageWidth - PAGE_MARGIN, pageHeight - BOTTOM_MARGIN + 10);
   doc.setFont("helvetica", "normal");
-  doc.text(`Issue Date: ${docData.issueDate || ""}`, pageWidth - 40, currentY, { align: 'right' });
-  currentY += 15;
-  if (docData.dueDate) {
-    doc.text(`Due Date: ${docData.dueDate || ""}`, pageWidth - 40, currentY, { align: 'right' });
+  doc.setFontSize(8);
+  doc.setTextColor(...BLACK);
+  doc.text(`Page ${pageNumber} of ${pageCount}`, pageWidth - PAGE_MARGIN, pageHeight - BOTTOM_MARGIN + 24, {
+    align: "right",
+  });
+};
+
+const drawPageNumberFooter = (doc: jsPDF) => {
+  const pageCount = doc.getNumberOfPages();
+  for (let page = 1; page <= pageCount; page += 1) {
+    doc.setPage(page);
+    drawFooter(doc, page, pageCount);
+  }
+};
+
+const renderHeader = (
+  doc: jsPDF,
+  docData: DocumentData,
+  logoDataUrl: string | null,
+  qrDataUrl: string | null,
+  currentY: number,
+): number => {
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const title = (docData.customTypeName || docData.documentType || "INVOICE").toUpperCase();
+  const accentColor = themeColors[docData.themeColor] || themeColors.violet;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(26);
+  doc.setTextColor(...BLACK);
+  doc.text(title, pageWidth - PAGE_MARGIN, currentY, { align: "right" });
+
+  if (logoDataUrl) {
+    const logoWidth = 120;
+    const logoHeight = 45;
+    doc.addImage(logoDataUrl, "PNG", PAGE_MARGIN, currentY - 12, logoWidth, logoHeight, undefined, "FAST");
   }
 
-  currentY -= 30; // reset to align with left side
+  if (qrDataUrl) {
+    const qrSize = 72;
+    doc.addImage(qrDataUrl, "PNG", pageWidth - PAGE_MARGIN - qrSize, currentY + 10, qrSize, qrSize, undefined, "FAST");
+  }
 
-  // Parties
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  doc.text("FROM:", 40, currentY);
-  doc.text("TO:", 250, currentY);
-  
-  currentY += 15;
-  doc.setFontSize(11);
-  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-  doc.text(docData.senderCompany || docData.senderName || "", 40, currentY);
-  doc.text(docData.clientCompany || docData.clientName || "", 250, currentY);
-  
+  const infoY = currentY + 35;
+  doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
+  doc.setTextColor(...BLACK);
+
+  const metadata = [
+    [`Document #`, docData.documentNumber || ""],
+    [`Issue Date`, docData.issueDate || ""],
+    [`Due Date`, docData.dueDate || ""],
+    [`Status`, docData.status || ""],
+  ].filter(([, value]) => value);
+
+  metadata.forEach((item, index) => {
+    doc.text(`${item[0]}: ${item[1]}`, pageWidth - PAGE_MARGIN, infoY + index * 12, {
+      align: "right",
+    });
+  });
+
+  const accentY = currentY + 4;
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  currentY += 15;
-  doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-  
+  doc.setTextColor(...accentColor);
+  doc.text(title, PAGE_MARGIN, accentY);
+
+  return infoY + metadata.length * 12 + 14;
+};
+
+const renderPartyBlocks = (doc: jsPDF, docData: DocumentData, currentY: number): number => {
+  const leftX = PAGE_MARGIN;
+  const rightX = doc.internal.pageSize.getWidth() / 2 + 10;
+  const blockWidth = doc.internal.pageSize.getWidth() / 2 - PAGE_MARGIN - 10;
+
   const senderLines = [
-    docData.senderName !== docData.senderCompany ? docData.senderName : null,
+    docData.senderCompany || docData.senderName,
+    docData.senderName && docData.senderCompany && docData.senderName !== docData.senderCompany ? docData.senderName : undefined,
     docData.senderAddress,
     docData.senderEmail,
     docData.senderPhone,
-    docData.senderTaxId ? `Tax ID: ${docData.senderTaxId}` : null
-  ].filter(Boolean);
+    docData.senderTaxId ? `Tax ID: ${docData.senderTaxId}` : undefined,
+  ].filter(Boolean) as string[];
 
   const clientLines = [
-    docData.clientName !== docData.clientCompany ? docData.clientName : null,
+    docData.clientCompany || docData.clientName,
+    docData.clientName && docData.clientCompany && docData.clientName !== docData.clientCompany ? docData.clientName : undefined,
     docData.clientAddress,
     docData.clientEmail,
     docData.clientPhone,
-    docData.clientTaxId ? `Tax ID: ${docData.clientTaxId}` : null
-  ].filter(Boolean);
+    docData.clientTaxId ? `Tax ID: ${docData.clientTaxId}` : undefined,
+  ].filter(Boolean) as string[];
 
-  let i = 0;
-  while (i < senderLines.length || i < clientLines.length) {
-    if (senderLines[i]) doc.text(senderLines[i] as string, 40, currentY);
-    if (clientLines[i]) doc.text(clientLines[i] as string, 250, currentY);
-    currentY += 14;
-    i++;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(...BLACK);
+  doc.text("FROM", leftX, currentY);
+  doc.text("BILL TO", rightX, currentY);
+
+  currentY += 14;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...BLACK);
+
+  const maxLines = Math.max(senderLines.length, clientLines.length);
+  for (let i = 0; i < maxLines; i += 1) {
+    const senderText = senderLines[i] ? doc.splitTextToSize(senderLines[i], blockWidth)[0] : "";
+    const clientText = clientLines[i] ? doc.splitTextToSize(clientLines[i], blockWidth)[0] : "";
+    if (senderText) {
+      doc.text(senderText, leftX, currentY);
+    }
+    if (clientText) {
+      doc.text(clientText, rightX, currentY);
+    }
+    currentY += 12;
   }
 
-  currentY += 30;
+  return currentY + 10;
+};
 
-  // Table
-  const tableCols = ["Description", "Qty", "Rate", "Tax", "Amount"];
-  const tableRows = docData.items.map((item: any) => [
-    item.name + (item.description ? `\n${item.description}` : ""),
-    item.quantity.toString(),
-    `${docData.currency || "$"}${item.rate.toFixed(2)}`,
-    `${item.taxPercent || 0}%`,
-    `${docData.currency || "$"}${(item.quantity * item.rate).toFixed(2)}`
-  ]);
+const renderItemsTable = (doc: jsPDF, docData: DocumentData, currentY: number): number => {
+  const tableColumns = [
+    { header: "Description", dataKey: "description" },
+    { header: "Qty", dataKey: "qty" },
+    { header: "Rate", dataKey: "rate" },
+    { header: "Tax", dataKey: "tax" },
+    { header: "Amount", dataKey: "amount" },
+  ];
+
+  const body = docData.items.map((item: DocumentItem) => {
+    const descriptionLines = item.description ? `${item.name}\n${item.description}` : item.name;
+    const amount = item.quantity * item.rate;
+    return {
+      description: descriptionLines,
+      qty: item.quantity != null ? String(item.quantity) : "",
+      rate: formatCurrency(item.rate, docData.currency),
+      tax: item.taxPercent ? `${item.taxPercent}%` : "",
+      amount: formatCurrency(amount, docData.currency),
+    };
+  });
 
   autoTable(doc, {
     startY: currentY,
-    head: [tableCols],
-    body: tableRows,
-    theme: 'grid',
-    headStyles: { 
-      fillColor: primaryColor as [number, number, number],
+    head: [tableColumns.map((column) => column.header)],
+    body: body.map((row) => [row.description, row.qty, row.rate, row.tax, row.amount]),
+    theme: "grid",
+    headStyles: {
+      fillColor: themeColors[docData.themeColor] || themeColors.violet,
       textColor: [255, 255, 255],
-      fontStyle: 'bold'
+      fontStyle: "bold",
+      halign: "center",
     },
-    styles: { 
-      fontSize: 10, 
-      cellPadding: 8,
-      lineColor: [230, 230, 230],
-      lineWidth: 0.5
+    bodyStyles: {
+      textColor: [...BLACK],
+      fontSize: 9,
+      minCellHeight: 18,
+    },
+    styles: {
+      halign: "left",
+      valign: "middle",
+      overflow: "linebreak",
+      cellPadding: 6,
     },
     columnStyles: {
-      0: { cellWidth: 220 },
-      1: { halign: 'center', cellWidth: 50 },
-      2: { halign: 'right', cellWidth: 70 },
-      3: { halign: 'right', cellWidth: 50 },
-      4: { halign: 'right', cellWidth: 80 }
+      0: { cellWidth: 240 },
+      1: { halign: "center", cellWidth: 45 },
+      2: { halign: "right", cellWidth: 80 },
+      3: { halign: "right", cellWidth: 55 },
+      4: { halign: "right", cellWidth: 80 },
     },
-    margin: { left: 40, right: 40 },
-    didDrawPage: (data) => {
-      // Add footer to each page
-      doc.setFontSize(8);
-      doc.setTextColor(150, 150, 150);
-      doc.text(`Page ${(doc.internal as any).getNumberOfPages()}`, pageWidth - 40, pageHeight - 20, { align: 'right' });
-    }
+    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+    pageBreak: "auto",
+    didDrawPage: () => {
+      /* footer will be painted later */
+    },
   });
 
-  currentY = (doc as any).lastAutoTable.finalY + 30;
+  return (doc as any).lastAutoTable?.finalY ?? currentY;
+};
 
-  // Check page break
-  if (currentY > pageHeight - 150) {
-    doc.addPage();
-    currentY = 40;
+const renderTotals = (doc: jsPDF, totals: any, currentY: number, currency: string): number => {
+  const x = doc.internal.pageSize.getWidth() - PAGE_MARGIN;
+  const items = [
+    { label: "Subtotal", value: safeNumber(totals.subtotal ?? totals.subTotal ?? totals.subtotalAmount) },
+    { label: "Tax", value: safeNumber(totals.tax ?? totals.taxTotal ?? totals.taxAmount) },
+    { label: "Discount", value: safeNumber(totals.discount ?? totals.discountTotal ?? totals.discountAmount) },
+    { label: "Shipping", value: safeNumber(totals.shipping ?? totals.shippingTotal ?? totals.shippingAmount) },
+    { label: "Deposit", value: safeNumber(totals.deposit ?? totals.amountPaid ?? totals.depositAmount) },
+    { label: "Balance Due", value: safeNumber(totals.balanceDue ?? totals.outstanding ?? totals.amountDue) },
+    { label: "Total", value: safeNumber(totals.total ?? totals.grandTotal ?? totals.totalAmount) },
+  ].filter((item) => item.value !== 0 || item.label === "Total");
+
+  if (items.length === 0) {
+    return currentY;
   }
 
-  // Totals
-  const totalsX = pageWidth - 40;
-  doc.setFontSize(10);
-  doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-  
-  doc.text(`Subtotal:`, totalsX - 90, currentY, { align: 'right' });
-  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-  doc.text(`${docData.currency || "$"}${totals.subtotal.toFixed(2)}`, totalsX, currentY, { align: 'right' });
-  currentY += 18;
-  
-  if (totals.taxTotal > 0) {
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text(`Tax:`, totalsX - 90, currentY, { align: 'right' });
-    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-    doc.text(`${docData.currency || "$"}${totals.taxTotal.toFixed(2)}`, totalsX, currentY, { align: 'right' });
-    currentY += 18;
-  }
-  
-  if (totals.discountTotal > 0) {
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text(`Discount:`, totalsX - 90, currentY, { align: 'right' });
-    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-    doc.text(`-${docData.currency || "$"}${totals.discountTotal.toFixed(2)}`, totalsX, currentY, { align: 'right' });
-    currentY += 18;
-  }
+  const rowHeight = 18;
+  const blockHeight = items.length * rowHeight + 18;
+  currentY = ensurePageSpace(doc, currentY, blockHeight + 20);
 
-  currentY += 5;
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  doc.text(`Grand Total:`, totalsX - 90, currentY, { align: 'right' });
-  doc.text(`${docData.currency || "$"}${totals.grandTotal.toFixed(2)}`, totalsX, currentY, { align: 'right' });
-  
-  currentY += 40;
+  const boxWidth = 220;
+  const boxX = x - boxWidth;
+  doc.setDrawColor(200);
+  doc.setFillColor(255, 255, 255);
+  doc.rect(boxX, currentY - 8, boxWidth, blockHeight, "F");
 
-  // Signature
-  if (signatureUrl) {
-    if (currentY > pageHeight - 100) {
-      doc.addPage();
-      currentY = 40;
-    }
-    try {
-      doc.addImage(signatureUrl, 'PNG', 40, currentY, 120, 40, undefined, 'FAST');
-      currentY += 45;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-      doc.text("Authorized Signature", 40, currentY);
-    } catch(e) {}
-  }
-
-  currentY += 40;
-
-  // Notes and Terms
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  
-  if (docData.notes) {
-    if (currentY > pageHeight - 100) {
-      doc.addPage();
-      currentY = 40;
+  doc.setTextColor(...BLACK);
+
+  items.forEach((item, index) => {
+    const y = currentY + index * rowHeight;
+    doc.text(item.label, boxX + 8, y);
+    doc.text(formatCurrency(item.value, currency), x - 8, y, { align: "right" });
+  });
+
+  return currentY + blockHeight + 10;
+};
+
+const renderBankDetails = (doc: jsPDF, docData: DocumentData, currentY: number): number => {
+  const bankLines = [
+    docData.bankName ? `Bank: ${docData.bankName}` : undefined,
+    docData.bankAccountHolder ? `Account: ${docData.bankAccountHolder}` : undefined,
+    docData.bankAccountNumber ? `Account No: ${docData.bankAccountNumber}` : undefined,
+    docData.bankBranchCode ? `Branch: ${docData.bankBranchCode}` : undefined,
+    docData.bankSwiftCode ? `SWIFT: ${docData.bankSwiftCode}` : undefined,
+    docData.bankIban ? `IBAN: ${docData.bankIban}` : undefined,
+  ].filter(Boolean) as string[];
+
+  if (!bankLines.length) return currentY;
+
+  currentY = ensurePageSpace(doc, currentY, bankLines.length * 12 + 30);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(...BLACK);
+  doc.text("Bank Details", PAGE_MARGIN, currentY);
+  currentY += 16;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...BLACK);
+
+  bankLines.forEach((line) => {
+    doc.text(line, PAGE_MARGIN, currentY);
+    currentY += 12;
+  });
+
+  return currentY + 8;
+};
+
+const renderBlockText = (doc: jsPDF, title: string, value: string, currentY: number): number => {
+  if (!value) return currentY;
+
+  const maxWidth = doc.internal.pageSize.getWidth() - PAGE_MARGIN * 2;
+  const lines = doc.splitTextToSize(value, maxWidth);
+  const blockHeight = lines.length * 12 + 26;
+  currentY = ensurePageSpace(doc, currentY, blockHeight);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(...BLACK);
+  doc.text(title, PAGE_MARGIN, currentY);
+  currentY += 16;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...BLACK);
+  doc.text(lines, PAGE_MARGIN, currentY);
+
+  return currentY + lines.length * 12 + 14;
+};
+
+const renderSignature = async (doc: jsPDF, signatureUrl: string | null, currentY: number): Promise<number> => {
+  const signatureHeight = 50;
+  const requiredHeight = signatureUrl ? signatureHeight + 30 : 30;
+  currentY = ensurePageSpace(doc, currentY, requiredHeight);
+
+  if (signatureUrl) {
+    const signatureDataUrl = await loadImageDataUrl(signatureUrl);
+    if (signatureDataUrl) {
+      const width = 140;
+      const height = 50;
+      doc.addImage(signatureDataUrl, "PNG", PAGE_MARGIN, currentY, width, height, undefined, "FAST");
+      currentY += height + 10;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...BLACK);
+      doc.text("Authorized Signature", PAGE_MARGIN, currentY);
+      return currentY + 18;
     }
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.setFont("helvetica", "bold");
-    doc.text("Notes:", 40, currentY);
-    currentY += 15;
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text(docData.notes, 40, currentY, { maxWidth: pageWidth - 80 });
-    currentY += 40;
   }
-  
-  if (docData.terms) {
-    if (currentY > pageHeight - 100) {
-      doc.addPage();
-      currentY = 40;
-    }
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.setFont("helvetica", "bold");
-    doc.text("Terms & Conditions:", 40, currentY);
-    currentY += 15;
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text(docData.terms, 40, currentY, { maxWidth: pageWidth - 80 });
-  }
+
+  doc.setDrawColor(200);
+  doc.setLineWidth(0.5);
+  doc.line(PAGE_MARGIN, currentY + 24, PAGE_MARGIN + 180, currentY + 24);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...BLACK);
+  doc.text("Authorized Signature", PAGE_MARGIN, currentY + 38);
+  return currentY + 48;
+};
+
+export const generateStructuredPDF = async (
+  docData: DocumentData,
+  logoUrl: string | null,
+  signatureUrl: string | null,
+  totals: any,
+) => {
+  const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4", compress: true });
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  const logoDataUrl = await loadImageDataUrl(logoUrl);
+  const qrDataUrl = await loadImageDataUrl(docData.qrCodeDestinationUrl || null);
+
+  let currentY = PAGE_MARGIN;
+  currentY = renderHeader(doc, docData, logoDataUrl, qrDataUrl, currentY);
+  currentY = renderPartyBlocks(doc, docData, currentY);
+  currentY = renderTotals(doc, totals, currentY, docData.currency);
+  currentY = renderBankDetails(doc, docData, currentY);
+
+  currentY = ensurePageSpace(doc, currentY, TABLE_MARGIN_TOP);
+  currentY += 4;
+  currentY = renderItemsTable(doc, docData, currentY);
+
+  currentY = await renderSignature(doc, signatureUrl, currentY + 16);
+  currentY = renderBlockText(doc, "Notes", docData.notes, currentY + 10);
+  currentY = renderBlockText(doc, "Terms & Conditions", docData.terms, currentY);
+
+  drawPageNumberFooter(doc);
 
   return doc;
 };

@@ -6,23 +6,17 @@ import {
   Trash2,
   CheckCircle2,
   Clock,
-  ArrowUp,
-  ArrowDown,
-  Mail,
   TrendingUp,
   Coins,
-  AlertCircle,
   Briefcase,
   Calendar as CalendarIcon,
   ChevronUp,
   ChevronDown,
   Sliders,
   X,
-  Filter,
   Copy,
   FileText,
   Check,
-  Zap,
 } from "lucide-react";
 import { SavedHistory, DebtorRecord } from "../types";
 
@@ -179,10 +173,6 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
     setNewDebtorNotes("");
     setShowAddDebtorForm(false);
     handleShowAlert("✅ Outstanding debtor account added to ledger!");
-  };
-
-  const handleSendNudge = (debtorName: string, amount: number) => {
-    handleShowAlert(`✉️ Dispatched professional payment reminder to ${debtorName} for $${amount.toFixed(2)}.`);
   };
 
   const handleMarkDebtorPaid = (debtorId: string) => {
@@ -749,13 +739,6 @@ export const WorkspaceDashboard: React.FC<WorkspaceDashboardProps> = ({
                               </span>
 
                               <div className="flex items-center gap-1">
-                                <button
-                                  onClick={() => handleSendNudge(d.clientName, d.amount)}
-                                  className="p-1 bg-white hover:bg-rose-50 border border-zinc-200 hover:border-rose-200 text-rose-600 rounded-lg transition-colors cursor-pointer"
-                                  title="Send Email Nudge"
-                                >
-                                  <Mail className="w-3 h-3" />
-                                </button>
                                 <button
                                   onClick={() => handleMarkDebtorPaid(d.id)}
                                   className="p-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-lg transition-colors cursor-pointer"
