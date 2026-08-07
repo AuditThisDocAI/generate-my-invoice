@@ -14,8 +14,8 @@ const themeColors: Record<string, number[]> = {
 const BLACK = [0, 0, 0] as const;
 const PAGE_MARGIN = 40;
 const BOTTOM_MARGIN = 60;
-const TABLE_MARGIN_TOP = 18;
-const LINE_HEIGHT = 14;
+const TABLE_MARGIN_TOP = 20;
+const LINE_HEIGHT = 16;
 
 const safeNumber = (value: unknown): number => {
   if (typeof value === "number" && Number.isFinite(value)) {
