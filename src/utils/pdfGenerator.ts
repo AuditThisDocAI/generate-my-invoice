@@ -72,7 +72,8 @@ const drawFooter = (doc: jsPDF, pageNumber: number, pageCount: number) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
 
-  doc.setDrawColor(200);
+  // subtle separator line
+  doc.setDrawColor(220);
   doc.setLineWidth(0.5);
   doc.line(PAGE_MARGIN, pageHeight - BOTTOM_MARGIN + 10, pageWidth - PAGE_MARGIN, pageHeight - BOTTOM_MARGIN + 10);
   doc.setFont("helvetica", "normal");
@@ -89,6 +90,10 @@ const drawPageNumberFooter = (doc: jsPDF) => {
     doc.setPage(page);
     drawFooter(doc, page, pageCount);
   }
+};
+
+const lightenColor = (color: number[], factor = 0.85) => {
+  return color.map((v) => Math.round(255 - (255 - v) * factor));
 };
 
 const renderHeader = (
@@ -139,7 +144,8 @@ const renderHeader = (
   const accentY = currentY + 4;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.setTextColor(...accentColor);
+  // ensure title on the left is black as requested
+  doc.setTextColor(...BLACK);
   doc.text(title, PAGE_MARGIN, accentY);
 
   return infoY + metadata.length * 12 + 14;
@@ -179,17 +185,28 @@ const renderPartyBlocks = (doc: jsPDF, docData: DocumentData, currentY: number):
   doc.setFontSize(9);
   doc.setTextColor(...BLACK);
 
+  // Render each side using full wrapped text to avoid overlapping lines
   const maxLines = Math.max(senderLines.length, clientLines.length);
   for (let i = 0; i < maxLines; i += 1) {
-    const senderText = senderLines[i] ? doc.splitTextToSize(senderLines[i], blockWidth)[0] : "";
-    const clientText = clientLines[i] ? doc.splitTextToSize(clientLines[i], blockWidth)[0] : "";
-    if (senderText) {
-      doc.text(senderText, leftX, currentY);
+    const senderText = senderLines[i] ? doc.splitTextToSize(senderLines[i], blockWidth) : [];
+    const clientText = clientLines[i] ? doc.splitTextToSize(clientLines[i], blockWidth) : [];
+
+    // print all wrapped sender lines
+    for (let s = 0; s < senderText.length; s += 1) {
+      doc.text(senderText[s], leftX, currentY);
+      currentY += 12;
     }
-    if (clientText) {
-      doc.text(clientText, rightX, currentY);
+
+    // for client, we need to track its own Y without advancing sender's vertical position incorrectly
+    const clientStartY = currentY - (senderText.length * 12);
+    for (let c = 0; c < clientText.length; c += 1) {
+      doc.text(clientText[c], rightX, clientStartY + c * 12);
     }
-    currentY += 12;
+
+    // ensure a small gap after rendering this pair
+    if (senderText.length === 0 && clientText.length === 0) {
+      currentY += 12;
+    }
   }
 
   return currentY + 10;
@@ -216,14 +233,16 @@ const renderItemsTable = (doc: jsPDF, docData: DocumentData, currentY: number): 
     };
   });
 
+  const headerFill = lightenColor(themeColors[docData.themeColor] || themeColors.violet, 0.9);
+
   autoTable(doc, {
     startY: currentY,
     head: [tableColumns.map((column) => column.header)],
     body: body.map((row) => [row.description, row.qty, row.rate, row.tax, row.amount]),
     theme: "grid",
     headStyles: {
-      fillColor: themeColors[docData.themeColor] || themeColors.violet,
-      textColor: [255, 255, 255],
+      fillColor: headerFill,
+      textColor: [...BLACK],
       fontStyle: "bold",
       halign: "center",
     },
@@ -237,6 +256,8 @@ const renderItemsTable = (doc: jsPDF, docData: DocumentData, currentY: number): 
       valign: "middle",
       overflow: "linebreak",
       cellPadding: 6,
+      lineColor: [230, 230, 230],
+      lineWidth: 0.25,
     },
     columnStyles: {
       0: { cellWidth: 240 },
@@ -277,7 +298,7 @@ const renderTotals = (doc: jsPDF, totals: any, currentY: number, currency: strin
 
   const boxWidth = 220;
   const boxX = x - boxWidth;
-  doc.setDrawColor(200);
+  doc.setDrawColor(220);
   doc.setFillColor(255, 255, 255);
   doc.rect(boxX, currentY - 8, boxWidth, blockHeight, "F");
 
@@ -367,7 +388,7 @@ const renderSignature = async (doc: jsPDF, signatureUrl: string | null, currentY
     }
   }
 
-  doc.setDrawColor(200);
+  doc.setDrawColor(220);
   doc.setLineWidth(0.5);
   doc.line(PAGE_MARGIN, currentY + 24, PAGE_MARGIN + 180, currentY + 24);
   doc.setFont("helvetica", "normal");
